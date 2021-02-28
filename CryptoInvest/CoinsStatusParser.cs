@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace CryptoInvest
 {
-    public class CryptoDataParser
+    public class CoinsStatusParser
     {
-        public List<CryptoCoinInTime> GetCryptoCoinsInTime(string link)
+        public List<CoinStatus> GetCryptoCoinsInTime(string link)
         {
             var web = new HtmlWeb();
             var doc = web.Load(link);
@@ -14,9 +14,9 @@ namespace CryptoInvest
             var allCoins = root.SelectNodes("//tr[@class='cmc-table-row']");
             return allCoins
                 .Select(row => {
-                    return new CryptoCoinInTime
+                    return new CoinStatus
                     {
-                        Id = row.ChildNodes[2].FirstChild.InnerText,
+                        CoinId = row.ChildNodes[2].FirstChild.InnerText,
                         Name = row.ChildNodes[1].FirstChild.LastChild.InnerText,
                         MarketCap = decimal.Parse(row.ChildNodes[3].FirstChild.InnerText.Trim('$')),
                         Price = decimal.Parse(row.ChildNodes[4].FirstChild.FirstChild.InnerText.Trim('$'))
