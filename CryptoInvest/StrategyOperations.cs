@@ -62,15 +62,18 @@ namespace CryptoInvest
             {
                 var idealBalance = idealBalances.TryGetValue(coinId, out var idealBalanceInDict) ? idealBalanceInDict : 0.0M;
                 var currentBalance = currentBalances.TryGetValue(coinId, out var currentBalanceInDict) ? currentBalanceInDict : 0.0M;
+                var coinWallet = wallet.GetOrAddSingleCoinWallet(coinId);
                 if (idealBalance > currentBalance)
                 {
-                    var coinWallet = wallet.GetOrAddSingleCoinWallet(coinId);
                     coinWallet.BuyByCash((idealBalance - currentBalance) * targetWalletValue);
+                }
+                else if (idealBalance == 0.0M)
+                {
+                    coinWallet.SellAll();
                 }
                 else if (currentBalance > idealBalance)
                 {
-                    var coinWallet = wallet.GetOrAddSingleCoinWallet(coinId);
-                    coinWallet.SellByCash((currentBalance - idealBalance) * targetWalletValue);
+                    coinWallet.SellForCash((currentBalance - idealBalance) * targetWalletValue);
                 }
             }
         }

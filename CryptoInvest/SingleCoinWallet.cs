@@ -4,6 +4,8 @@ namespace CryptoInvest
 {
     public class SingleCoinWallet
     {
+        private const decimal valueEps = 0.01M;
+
         private readonly PriceBoard priceBoard;
 
         public string CoinId { get; }
@@ -30,28 +32,45 @@ namespace CryptoInvest
 
         public void SellUnits(decimal units)
         {
-            if (units > Units)
+            if (IsToBeSoldApproximatellyAll(units))
+            {
+                Units = 0;
+            }
+            else if (units > Units)
             {
                 throw new InvalidOperationException("Not enough units in wallet");
             }
-            Units -= units;
+            else
+            {
+                Units -= units;
+            }
         }
 
-        public void SellByCash(decimal cash)
+        public void SellForCash(decimal cash)
         {
             var unitsToBeSold = cash / priceBoard.GetPrice(CoinId);
-            if (unitsToBeSold > Units)
+            if (IsToBeSoldApproximatellyAll(unitsToBeSold))
+            {
+                Units = 0;
+            }
+            else if (unitsToBeSold > Units)
             {
                 throw new InvalidOperationException("Not enough units in wallet");
             }
-            Units -= unitsToBeSold;
+            else
+            {
+                Units -= unitsToBeSold;
+            }
         }
 
         public decimal SellAll()
         {
-            var price = priceBoard.GetPrice(CoinId);
+            var value = Value;
             Units = 0;
-            return price;
+            return value;
         }
+
+        private bool IsToBeSoldApproximatellyAll(decimal units) =>
+            Math.Abs(units - Units) * priceBoard.GetPrice(CoinId) < valueEps;
     }
 }
