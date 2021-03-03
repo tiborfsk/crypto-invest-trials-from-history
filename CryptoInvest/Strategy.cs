@@ -4,6 +4,7 @@ namespace CryptoInvest
 {
     public class Strategy
     {
+        private readonly decimal investAmount;
         private readonly StrategyOperations strategyOperations;
         private readonly TimeSpan buyingInterval;
         private readonly bool performRebalancing;
@@ -13,14 +14,15 @@ namespace CryptoInvest
 
         public decimal Invested { get; private set; } = 0;
 
-        public Strategy(StrategyOperations strategyOperations, TimeSpan buyingInterval)
+        public Strategy(decimal investAmount, StrategyOperations strategyOperations, TimeSpan buyingInterval)
         {
+            this.investAmount = investAmount;
             this.strategyOperations = strategyOperations;
             this.buyingInterval = buyingInterval;
         }
 
-        public Strategy(StrategyOperations strategyOperations, TimeSpan buyingInterval, TimeSpan rebalancingInterval)
-            : this(strategyOperations, buyingInterval)
+        public Strategy(decimal investAmount, StrategyOperations strategyOperations, TimeSpan buyingInterval, TimeSpan rebalancingInterval)
+            : this(investAmount, strategyOperations, buyingInterval)
         {
             this.rebalancingInterval = rebalancingInterval;
             performRebalancing = true;
@@ -32,11 +34,11 @@ namespace CryptoInvest
             var performRebalance = performRebalancing && lastRebalancing + rebalancingInterval <= currentTime;
             if (performBuy && performRebalance)
             {
-                strategyOperations.PerformBuyAndRebalancing();
+                strategyOperations.PerformBuyAndRebalancing(investAmount);
             }
             else if (performBuy)
             {
-                strategyOperations.PerformOnlyBuy();
+                strategyOperations.PerformOnlyBuy(investAmount);
             }
             else if (performRebalance)
             {
@@ -44,7 +46,7 @@ namespace CryptoInvest
             }
             if (performBuy)
             {
-                Invested += 1.0M;
+                Invested += investAmount;
                 lastBuying = currentTime;
             }
             if (performRebalance)

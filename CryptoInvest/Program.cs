@@ -15,8 +15,8 @@ namespace CryptoInvest
             var wallet = new Wallet(priceBoard);
             var strategyOperations = new StrategyOperations(wallet, priceBoard, input.TopCoinsCount, input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap());
             var strategy = input.EnableRebalancing
-                ? new Strategy(strategyOperations, input.BuyingInterval.ToTimeSpan(), input.RebalancingInterval.ToTimeSpan())
-                : new Strategy(strategyOperations, input.BuyingInterval.ToTimeSpan());
+                ? new Strategy(input.InvestAmount, strategyOperations, input.BuyingInterval.ToTimeSpan(), input.RebalancingInterval.ToTimeSpan())
+                : new Strategy(input.InvestAmount, strategyOperations, input.BuyingInterval.ToTimeSpan());
             var simulation = new Simulation(priceBoard, strategy);
 
             simulation.Run(coinStatesHistoryGenerator.GetCoinsStatesHistory(input.From, input.To));

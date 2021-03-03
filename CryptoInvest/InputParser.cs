@@ -16,7 +16,10 @@ namespace CryptoInvest
             Input input;
             try
             {
-                input = JsonSerializer.Deserialize<Input>(File.ReadAllText(inputFilePath));
+                input = JsonSerializer.Deserialize<Input>(File.ReadAllText(inputFilePath), new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
             }
             catch (Exception ex)
             {

@@ -19,9 +19,9 @@ namespace CryptoInvest
             this.referenceTotalMarketCap = referenceTotalMarketCap;
         }
 
-        public virtual void PerformOnlyBuy()
+        public virtual void PerformOnlyBuy(decimal investAmount)
         {
-            var totalCashToInvest = 1.0M + SellCoinsNotAlreadyInTop();
+            var totalCashToInvest = investAmount + SellCoinsNotAlreadyInTop();
             var topCoins = priceBoard.GetTopCoins(topCoinsToBuyCount);
 
             foreach (var coin in topCoins)
@@ -37,9 +37,9 @@ namespace CryptoInvest
             PerformRebalancing(newCashToInvest: 0.0M);
         }
 
-        public virtual void PerformBuyAndRebalancing()
+        public virtual void PerformBuyAndRebalancing(decimal investAmount)
         {
-            PerformRebalancing(newCashToInvest: 1.0M);
+            PerformRebalancing(newCashToInvest: investAmount);
         }
 
         private void PerformRebalancing(decimal newCashToInvest)

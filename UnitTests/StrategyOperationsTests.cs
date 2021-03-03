@@ -7,6 +7,8 @@ namespace UnitTests
 {
     public class StrategyOperationsTests
     {
+        private const decimal investAmount = 1.0M;
+
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
@@ -42,11 +44,11 @@ namespace UnitTests
             // test
             if (withRebalancing)
             {
-                strategyOperations.PerformBuyAndRebalancing();
+                strategyOperations.PerformBuyAndRebalancing(investAmount);
             }
             else
             {
-                strategyOperations.PerformOnlyBuy();
+                strategyOperations.PerformOnlyBuy(investAmount);
             }
 
             // assert
@@ -101,11 +103,11 @@ namespace UnitTests
             // test
             if (withRebalancing)
             {
-                strategyOperations.PerformBuyAndRebalancing();
+                strategyOperations.PerformBuyAndRebalancing(investAmount);
             }
             else
             {
-                strategyOperations.PerformOnlyBuy();
+                strategyOperations.PerformOnlyBuy(investAmount);
             }
 
             // assert
@@ -148,7 +150,7 @@ namespace UnitTests
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
 
             // test
-            strategyOperations.PerformOnlyBuy();
+            strategyOperations.PerformOnlyBuy(investAmount);
 
             // assert
             Assert.Equal(29M, wallet.Value, precision: 10);
@@ -202,7 +204,7 @@ namespace UnitTests
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.AllCoins);
 
             // test
-            strategyOperations.PerformOnlyBuy();
+            strategyOperations.PerformOnlyBuy(investAmount);
 
             // assert
             Assert.Equal(29M, wallet.Value, precision: 10);
@@ -352,7 +354,7 @@ namespace UnitTests
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
 
             // test
-            strategyOperations.PerformBuyAndRebalancing();
+            strategyOperations.PerformBuyAndRebalancing(investAmount);
 
             // assert
             Assert.Equal(29M, wallet.Value, precision: 10);
@@ -406,7 +408,7 @@ namespace UnitTests
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.AllCoins);
 
             // test
-            strategyOperations.PerformBuyAndRebalancing();
+            strategyOperations.PerformBuyAndRebalancing(investAmount);
 
             // assert
             Assert.Equal(29M, wallet.Value, precision: 10);
@@ -454,7 +456,7 @@ namespace UnitTests
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
 
             // test
-            strategyOperations.PerformOnlyBuy();
+            strategyOperations.PerformOnlyBuy(investAmount);
 
             // assert
             Assert.Equal(29M, wallet.Value, precision: 10);
@@ -555,7 +557,7 @@ namespace UnitTests
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
 
             // test
-            strategyOperations.PerformBuyAndRebalancing();
+            strategyOperations.PerformBuyAndRebalancing(investAmount);
 
             // assert
             Assert.Equal(29M, wallet.Value, precision: 10);
