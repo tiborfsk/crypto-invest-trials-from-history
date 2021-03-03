@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace ApplicationTests
@@ -27,13 +29,22 @@ namespace ApplicationTests
             }
 
             // publish app
-            Directory.CreateDirectory("publish");
-            var publishProcess = Process.Start("dotnet", @"publish ../../../../CryptoInvest/CryptoInvest.csproj -o publish");
+            Directory.CreateDirectory(publishFolderName);
+            var pathToCsproj = Path.Combine( 
+                string.Join(
+                    Path.DirectorySeparatorChar,  
+                    Directory.GetCurrentDirectory().Split(Path.DirectorySeparatorChar).TakeWhile(f => f != "ApplicationTests")
+                ),
+                "CryptoInvest",
+                "CryptoInvest.csproj"
+            );
+            Console.WriteLine(pathToCsproj);
+            var publishProcess = Process.Start("dotnet", @$"publish {pathToCsproj} -o publish");
             publishProcess.WaitForExit();
             Assert.Equal(0, publishProcess.ExitCode);
 
             // create input file
-            File.WriteAllText(@"publish/input-test.json",
+            File.WriteAllText(Path.Combine(publishFolderName, "input-test.json"),
 @"
 {
     ""from"":""2021-01-01"",
@@ -55,8 +66,8 @@ namespace ApplicationTests
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = @"publish/CryptoInvest.exe",
-                    Arguments = @"publish/input-test.json",
+                    FileName = Path.Combine(publishFolderName, "CryptoInvest.exe"),
+                    Arguments = Path.Combine(publishFolderName, "input-test.json"),
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
