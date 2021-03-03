@@ -66,7 +66,7 @@ namespace ApplicationTests
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = Path.Combine(publishFolderName, "CryptoInvest.exe"),
+                    FileName = Path.Combine(publishFolderName, "CryptoInvest"),
                     Arguments = Path.Combine(publishFolderName, "input-test.json"),
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -84,6 +84,7 @@ namespace ApplicationTests
 
             appProcess.WaitForExit();
 
+            // assert output
             Assert.Equal(0, appProcess.ExitCode);
             Assert.Contains(lines, l => l.Contains("From") && l.Contains("2021") && l.Contains("1"));
             Assert.Contains(lines, l => l.Contains("To") && l.Contains("2021") && l.Contains("20") && l.Contains("1"));
