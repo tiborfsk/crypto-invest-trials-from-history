@@ -1,0 +1,10 @@
+{
+	"From":"2020-12-01",
+	"To":"2021-01-31",
+	"SleepInSeconds":10,
+	"BuyingInterval":"7.00:00:00",
+	"EnableRebalancing":true,
+	"RebalancingInterval":"31.00:00:00",
+	"TopCoinsCount":10,
+	"ReferenceTotalMarketCap":"TopCoins"
+}

@@ -6,31 +6,42 @@ namespace CryptoInvest
 {
     public class PriceBoard
     {
-        private SortedList<string, CoinStatus> coinsStatus;
+        private SortedList<decimal, CoinStatus> sortedCoinsStates;
+        private Dictionary<string, CoinStatus> coinsStates;
 
         public decimal TotalMarketCap { get; private set; }
 
-        public void PutData(List<CoinStatus> cryptoCoin)
+        public void PutData(List<CoinStatus> coinsStates)
         {
-            TotalMarketCap = cryptoCoin.Sum(c => c.MarketCap);
-            coinsStatus = new SortedList<string, CoinStatus>(cryptoCoin.ToDictionary(c => c.CoinId, c => c));
+            TotalMarketCap = coinsStates.Sum(c => c.MarketCap);
+            this.coinsStates = coinsStates.ToDictionary(c => c.CoinId, c => c);
+            sortedCoinsStates = new SortedList<decimal, CoinStatus>(
+                coinsStates.OrderByDescending(cs => cs.MarketCap).ToDictionary(cs => cs.MarketCap, cs => cs),
+                new DescendingComparer<decimal>()
+            );
         }
 
         public decimal GetPrice(string id)
         {
-            var coinsStatus = this.coinsStatus ?? throw new InvalidOperationException("No data");
-            return coinsStatus.TryGetValue(id, out var coinStatus) ? coinStatus.Price : 0.0M;
+            var coinsStates = this.coinsStates ?? throw new InvalidOperationException("No data");
+            return coinsStates.TryGetValue(id, out var coinStatus) ? coinStatus.Price : 0.0M;
         }
 
         public decimal GetMarketCap(string id)
         {
-            var coinsStatus = this.coinsStatus ?? throw new InvalidOperationException("No data");
-            return coinsStatus.TryGetValue(id, out var coinStatus) ? coinStatus.MarketCap : 0.0M;
+            var coinsStates = this.coinsStates ?? throw new InvalidOperationException("No data");
+            return coinsStates.TryGetValue(id, out var coinStatus) ? coinStatus.MarketCap : 0.0M;
+        }
+
+        public string GetName(string id)
+        {
+            var coinsStates = this.coinsStates ?? throw new InvalidOperationException("No data");
+            return coinsStates.TryGetValue(id, out var coinStatus) ? coinStatus.Name : null;
         }
 
         public List<CoinStatus> GetTopCoins(int n)
         {
-            return coinsStatus.Take(n).Select(cs => cs.Value).ToList();
+            return sortedCoinsStates.Take(n).Select(cs => cs.Value).ToList();
         }
     }
 }

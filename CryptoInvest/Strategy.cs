@@ -11,6 +11,8 @@ namespace CryptoInvest
         private DateTime lastBuying;
         private DateTime lastRebalancing;
 
+        public decimal Invested { get; private set; } = 0;
+
         public Strategy(StrategyOperations strategyOperations, TimeSpan buyingInterval)
         {
             this.strategyOperations = strategyOperations;
@@ -42,6 +44,7 @@ namespace CryptoInvest
             }
             if (performBuy)
             {
+                Invested += 1.0M;
                 lastBuying = currentTime;
             }
             if (performRebalance)

@@ -26,7 +26,7 @@ namespace CryptoInvest
 
             foreach (var coin in topCoins)
             {
-                var singleCoinWallet = wallet.GetOrAddSingleCoinWallet(coin.CoinId);
+                var singleCoinWallet = wallet.GetOrAddSingleCoinWallet(coin.CoinId, coin.Name);
 
                 singleCoinWallet.BuyByCash(ComputeCashToInvestToCoin(coin.CoinId, totalCashToInvest));
             }
@@ -62,7 +62,7 @@ namespace CryptoInvest
             {
                 var idealBalance = idealBalances.TryGetValue(coinId, out var idealBalanceInDict) ? idealBalanceInDict : 0.0M;
                 var currentBalance = currentBalances.TryGetValue(coinId, out var currentBalanceInDict) ? currentBalanceInDict : 0.0M;
-                var coinWallet = wallet.GetOrAddSingleCoinWallet(coinId);
+                var coinWallet = wallet.GetOrAddSingleCoinWallet(coinId, priceBoard.GetName(coinId));
                 if (idealBalance > currentBalance)
                 {
                     coinWallet.BuyByCash((idealBalance - currentBalance) * targetWalletValue);

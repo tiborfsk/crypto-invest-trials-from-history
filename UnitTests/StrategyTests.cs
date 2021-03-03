@@ -14,6 +14,10 @@ namespace UnitTests
             var strategy = new Strategy(strategyOperations, buyingInterval: TimeSpan.FromDays(2));
 
             {
+                Assert.Equal(0, strategy.Invested);
+            }
+
+            {
                 strategy.PerformAction(new DateTime(2021, 1, 1));
 
                 strategyOperations.Received().PerformOnlyBuy();
@@ -21,6 +25,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(1, strategy.Invested);
             }
 
             {
@@ -29,6 +35,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyBuy();
                 strategyOperations.DidNotReceive().PerformBuyAndRebalancing();
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
+
+                Assert.Equal(1, strategy.Invested);
             }
 
             {
@@ -37,6 +45,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyBuy();
                 strategyOperations.DidNotReceive().PerformBuyAndRebalancing();
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
+
+                Assert.Equal(1, strategy.Invested);
             }
 
             {
@@ -47,6 +57,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(2, strategy.Invested);
             }
 
             {
@@ -55,6 +67,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyBuy();
                 strategyOperations.DidNotReceive().PerformBuyAndRebalancing();
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
+
+                Assert.Equal(2, strategy.Invested);
             }
 
             {
@@ -63,6 +77,8 @@ namespace UnitTests
                 strategyOperations.Received().PerformOnlyBuy();
                 strategyOperations.DidNotReceive().PerformBuyAndRebalancing();
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
+
+                Assert.Equal(3, strategy.Invested);
             }
 
             {
@@ -71,6 +87,8 @@ namespace UnitTests
                 strategyOperations.Received().PerformOnlyBuy();
                 strategyOperations.DidNotReceive().PerformBuyAndRebalancing();
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
+
+                Assert.Equal(4, strategy.Invested);
             }
         }
 
@@ -81,6 +99,10 @@ namespace UnitTests
             var strategy = new Strategy(strategyOperations, buyingInterval: TimeSpan.FromDays(2), rebalancingInterval: TimeSpan.FromDays(2));
 
             {
+                Assert.Equal(0, strategy.Invested);
+            }
+
+            {
                 strategy.PerformAction(new DateTime(2021, 1, 1));
 
                 strategyOperations.DidNotReceive().PerformOnlyBuy();
@@ -88,6 +110,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(1, strategy.Invested);
             }
 
             {
@@ -114,6 +138,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(2, strategy.Invested);
             }
 
             {
@@ -140,6 +166,10 @@ namespace UnitTests
             var strategy = new Strategy(strategyOperations, buyingInterval: TimeSpan.FromDays(3), rebalancingInterval: TimeSpan.FromDays(4));
 
             {
+                Assert.Equal(0, strategy.Invested);
+            }
+
+            {
                 strategy.PerformAction(new DateTime(2021, 1, 1));
 
                 strategyOperations.DidNotReceive().PerformOnlyBuy();
@@ -147,6 +177,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(1, strategy.Invested);
             }
 
             {
@@ -173,6 +205,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(2, strategy.Invested);
             }
 
             {
@@ -201,6 +235,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(3, strategy.Invested);
             }
 
             {
@@ -211,6 +247,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
 
                 strategyOperations.ClearReceivedCalls();
+
+                Assert.Equal(4, strategy.Invested);
             }
 
             {
@@ -227,6 +265,8 @@ namespace UnitTests
                 strategyOperations.DidNotReceive().PerformOnlyBuy();
                 strategyOperations.Received().PerformBuyAndRebalancing();
                 strategyOperations.DidNotReceive().PerformOnlyRebalancing();
+
+                Assert.Equal(5, strategy.Invested);
             }
         }
     }

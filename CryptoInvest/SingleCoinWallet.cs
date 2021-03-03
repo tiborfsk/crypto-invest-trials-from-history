@@ -10,13 +10,16 @@ namespace CryptoInvest
 
         public string CoinId { get; }
 
+        public string CoinName { get; }
+
         public decimal Units { get; private set; }
 
         public decimal Value => Units * priceBoard.GetPrice(CoinId);
 
-        public SingleCoinWallet(string coinId, PriceBoard priceBoard)
+        public SingleCoinWallet(string coinId, string coinName, PriceBoard priceBoard)
         {
             CoinId = coinId;
+            CoinName = coinName;
             this.priceBoard = priceBoard;
         }
 
@@ -72,5 +75,7 @@ namespace CryptoInvest
 
         private bool IsToBeSoldApproximatellyAll(decimal units) =>
             Math.Abs(units - Units) * priceBoard.GetPrice(CoinId) < valueEps;
+
+        public override string ToString() => $"{CoinName}: {Units:0.000000000} {CoinId} ({Value:0.00} $)";
     }
 }

@@ -30,20 +30,20 @@ namespace CryptoInvest
             return singleCoinWallets[coinId];
         }
 
-        public void AddSingleCoinWallet(string coinId)
+        public void AddSingleCoinWallet(string coinId, string coinName)
         {
             if (singleCoinWallets.ContainsKey(coinId))
             {
                 throw new InvalidOperationException("Single coin wallet already created.");
             }
-            singleCoinWallets.Add(coinId, new SingleCoinWallet(coinId, priceBoard));
+            singleCoinWallets.Add(coinId, new SingleCoinWallet(coinId, coinName, priceBoard));
         }
 
-        public SingleCoinWallet GetOrAddSingleCoinWallet(string coinId)
+        public SingleCoinWallet GetOrAddSingleCoinWallet(string coinId, string coinName)
         {
             if (!HasSingleCoinWallet(coinId))
             {
-                AddSingleCoinWallet(coinId);
+                AddSingleCoinWallet(coinId, coinName);
             }
 
             return GetSingleCoinWallet(coinId);
@@ -57,5 +57,7 @@ namespace CryptoInvest
             }
             singleCoinWallets.Remove(coinId);
         }
+
+        public override string ToString() => $"Total value: {Value:0.0000}, {string.Join(", ", SingleCoinWallets.OrderByDescending(scw => scw.Value))}";
     }
 }

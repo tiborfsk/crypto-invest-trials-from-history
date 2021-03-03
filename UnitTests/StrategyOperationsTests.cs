@@ -140,9 +140,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("BBB");
+            wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
@@ -194,9 +194,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("BBB");
+            wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.AllCoins);
@@ -242,9 +242,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("BBB");
+            wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
@@ -296,9 +296,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("BBB");
+            wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.AllCoins);
@@ -344,9 +344,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("BBB");
+            wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
@@ -398,9 +398,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("BBB");
+            wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.AllCoins);
@@ -446,9 +446,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("CCC");
+            wallet.AddSingleCoinWallet("CCC", "ccc");
             wallet.GetSingleCoinWallet("CCC").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
@@ -497,9 +497,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("CCC");
+            wallet.AddSingleCoinWallet("CCC", "ccc");
             wallet.GetSingleCoinWallet("CCC").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
@@ -547,9 +547,9 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            wallet.AddSingleCoinWallet("AAA");
+            wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
-            wallet.AddSingleCoinWallet("CCC");
+            wallet.AddSingleCoinWallet("CCC", "ccc");
             wallet.GetSingleCoinWallet("CCC").BuyUnits(6);
 
             var strategyOperations = new StrategyOperations(wallet, priceBoard, topCoinsToBuyCount: 2, ReferenceTotalMarketCap.TopCoins);
