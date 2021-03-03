@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace CryptoInvest
 {
@@ -10,7 +11,7 @@ namespace CryptoInvest
             var input = InputParser.Parse(inputPath);
 
             var coinStatesHistoryGenerator = new CoinStatesHistoryGenerator(new HistoricalLinksParser(), new CoinsStatusParser(), input.SleepInSeconds);
-            var priceBoard = new PriceBoard();
+            var priceBoard = new PriceBoard(input.CoinsToIgnore.ToList());
             var wallet = new Wallet(priceBoard);
             var strategyOperations = new StrategyOperations(wallet, priceBoard, input.TopCoinsCount, input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap());
             var strategy = input.EnableRebalancing

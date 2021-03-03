@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Polly;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -24,7 +25,19 @@ namespace CryptoInvest
             historicalLinks.ForEach(hl =>
             {
                 Thread.Sleep(sleep * 1000);
-                cryptoStates.Add(hl.Time, coinsStatusParser.GetCryptoCoinsInTime(hl.Link));
+                Policy
+                    .Handle<Exception>()
+                    .WaitAndRetry(new[]
+                    {
+                        TimeSpan.FromSeconds(30),
+                        TimeSpan.FromSeconds(120),
+                        TimeSpan.FromSeconds(600)
+                    })
+                    .Execute(() =>
+                    {
+                        Console.WriteLine($"{hl.Time:yyyy MM dd}...");
+                        cryptoStates.Add(hl.Time, coinsStatusParser.GetCryptoCoinsInTime(hl.Link));
+                    });
             });
             return new SortedList<DateTime, List<CoinStatus>>(cryptoStates);
         }

@@ -8,8 +8,19 @@ namespace CryptoInvest
     {
         private SortedList<decimal, CoinStatus> sortedCoinsStates;
         private Dictionary<string, CoinStatus> coinsStates;
+        private readonly List<string> coinsToIgnore;
 
         public decimal TotalMarketCap { get; private set; }
+
+        public PriceBoard()
+        {
+            coinsToIgnore = new List<string>();
+        }
+
+        public PriceBoard(List<string> coinsToIgnore)
+        {
+            this.coinsToIgnore = coinsToIgnore;
+        }
 
         public void PutData(List<CoinStatus> coinsStates)
         {
@@ -41,7 +52,7 @@ namespace CryptoInvest
 
         public List<CoinStatus> GetTopCoins(int n)
         {
-            return sortedCoinsStates.Take(n).Select(cs => cs.Value).ToList();
+            return sortedCoinsStates.Where(scs => !coinsToIgnore.Contains(scs.Value.CoinId)).Take(n).Select(cs => cs.Value).ToList();
         }
     }
 }
