@@ -9,6 +9,11 @@ namespace CryptoInvest
         {
             var inputPath = args.Length < 1 ? "input.json" : args[0];
             var input = InputParser.Parse(inputPath);
+            foreach (var property in typeof(Input).GetProperties())
+            {
+                var value = property.GetValue(input);
+                Console.WriteLine($"{property.Name}: {(value is string[] arrayValue ? string.Join(", ", arrayValue) : value)}");
+            }
 
             var coinStatesHistoryGenerator = new CoinStatesHistoryGenerator(new HistoricalLinksParser(), new CoinsStatusParser(), input.SleepInSeconds);
             var priceBoard = new PriceBoard(input.CoinsToIgnore.ToList());
