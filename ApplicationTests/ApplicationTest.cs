@@ -28,12 +28,12 @@ namespace ApplicationTests
 
             // publish app
             Directory.CreateDirectory("publish");
-            var publishProcess = Process.Start("dotnet", @"publish ..\..\..\..\CryptoInvest\CryptoInvest.csproj -o publish");
+            var publishProcess = Process.Start("dotnet", @"publish ../../../../CryptoInvest/CryptoInvest.csproj -o publish");
             publishProcess.WaitForExit();
             Assert.Equal(0, publishProcess.ExitCode);
 
             // create input file
-            File.WriteAllText(@"publish\input-test.json",
+            File.WriteAllText(@"publish/input-test.json",
 @"
 {
     ""from"":""2021-01-01"",
@@ -55,8 +55,8 @@ namespace ApplicationTests
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = @"publish\CryptoInvest.exe",
-                    Arguments = @"publish\input-test.json",
+                    FileName = @"publish/CryptoInvest.exe",
+                    Arguments = @"publish/input-test.json",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
