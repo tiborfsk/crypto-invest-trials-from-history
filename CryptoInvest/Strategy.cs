@@ -9,8 +9,8 @@ namespace CryptoInvest
         private readonly TimeSpan buyingInterval;
         private readonly bool performRebalancing;
         private readonly TimeSpan rebalancingInterval;
-        private DateTime lastBuying;
-        private DateTime lastRebalancing;
+        private DateTime? nextBuy;
+        private DateTime? nextRebalancing;
 
         public decimal Invested { get; private set; } = 0;
 
@@ -30,28 +30,36 @@ namespace CryptoInvest
 
         public void PerformAction(DateTime currentTime)
         {
-            var performBuy = lastBuying + buyingInterval <= currentTime;
-            var performRebalance = performRebalancing && lastRebalancing + rebalancingInterval <= currentTime;
-            if (performBuy && performRebalance)
+            var buys = 0;
+            while (!nextBuy.HasValue || currentTime >= nextBuy)
             {
-                strategyOperations.PerformBuyAndRebalancing(investAmount);
+                nextBuy = nextBuy.HasValue ? nextBuy + buyingInterval : currentTime + buyingInterval;
+                buys++;
             }
-            else if (performBuy)
+
+            var rebalance = false;
+            if (performRebalancing)
             {
-                strategyOperations.PerformOnlyBuy(investAmount);
+                while (!nextRebalancing.HasValue || currentTime >= nextRebalancing)
+                {
+                    nextRebalancing = nextRebalancing.HasValue ? nextRebalancing + rebalancingInterval : currentTime + rebalancingInterval;
+                    rebalance = true;
+                }
             }
-            else if (performRebalance)
+
+            if (buys > 0 && rebalance)
+            {
+                strategyOperations.PerformBuyAndRebalancing(investAmount * buys);
+                Invested += investAmount * buys;
+            }
+            else if (buys > 0)
+            {
+                strategyOperations.PerformOnlyBuy(investAmount * buys);
+                Invested += investAmount * buys;
+            }
+            else if (rebalance)
             {
                 strategyOperations.PerformOnlyRebalancing();
-            }
-            if (performBuy)
-            {
-                Invested += investAmount;
-                lastBuying = currentTime;
-            }
-            if (performRebalance)
-            {
-                lastRebalancing = currentTime;
             }
         }
     }
