@@ -4,12 +4,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ApplicationTests
 {
     public class ApplicationTest
     {
         const string publishFolderName = "publish";
+
+        private readonly ITestOutputHelper output;
+
+        public ApplicationTest(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
 
         [Fact]
         public void TestApplication()
@@ -79,7 +87,9 @@ namespace ApplicationTests
             var lines = new List<string>();
             while (!appProcess.StandardOutput.EndOfStream)
             {
-                lines.Add(appProcess.StandardOutput.ReadLine());
+                var outputLine = appProcess.StandardOutput.ReadLine();
+                lines.Add(outputLine);
+                output.WriteLine(outputLine);
             }
 
             appProcess.WaitForExit();
