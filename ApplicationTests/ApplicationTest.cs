@@ -96,7 +96,7 @@ namespace ApplicationTests
 
             // assert output
             Assert.Equal(0, appProcess.ExitCode);
-            Assert.Equal(28, lines.Count);
+            Assert.Equal(28, lines.Distinct().Count()); // distinct to address that dates in progress output part can repeat
             Assert.Contains(lines, l => l.Contains("From") && l.Contains("2021") && l.Contains("1"));
             Assert.Contains(lines, l => l.Contains("To") && l.Contains("2021") && l.Contains("31"));
             Assert.Contains(lines, l => l.Contains("SleepInSeconds") && l.Contains("10"));

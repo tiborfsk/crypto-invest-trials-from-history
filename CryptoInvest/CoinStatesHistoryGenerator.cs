@@ -31,7 +31,8 @@ namespace CryptoInvest
                     {
                         TimeSpan.FromSeconds(30),
                         TimeSpan.FromSeconds(120),
-                        TimeSpan.FromSeconds(600)
+                        TimeSpan.FromSeconds(600),
+                        TimeSpan.FromSeconds(1800)
                     })
                     .Execute(() =>
                     {
