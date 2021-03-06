@@ -28,7 +28,7 @@ jobs:
     - name: Publish for Linux
       run: dotnet publish CryptoInvest/CryptoInvest.csproj -c Release -o linux-publish --runtime linux-x64 --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false
     - name: Install Zip
-      run: apt get update & apt get install zip
+      run: apt-get update & apt-get install zip
     - name: Zip binaries
       run: zip win-x64.zip publish-win/* & zip linux-x64.zip publish-linux/*
     - name: Archive
