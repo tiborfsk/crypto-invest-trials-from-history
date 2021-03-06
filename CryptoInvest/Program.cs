@@ -26,11 +26,11 @@ namespace CryptoInvest
 
             simulation.Run(coinStatesHistoryGenerator.GetCoinsStatesHistory(input.From, input.To));
 
-            Console.WriteLine($"Initial market cap: {simulation.InitialMarketCap:0}");
-            Console.WriteLine($"Final market cap: {simulation.FinalMarketCap:0}");
+            Console.WriteLine($"Initial market cap: ${simulation.InitialMarketCap:0}");
+            Console.WriteLine($"Final market cap: ${simulation.FinalMarketCap:0}");
             Console.WriteLine($"Market cap change: {(simulation.FinalMarketCap / simulation.InitialMarketCap - 1.0M) * 100.0M:0.00}%");
-            Console.WriteLine($"Invested: {strategy.Invested:0.0000}");
-            Console.WriteLine($"Final value: {wallet.Value:0.0000}");
+            Console.WriteLine($"Invested: ${strategy.Invested:0.0000}");
+            Console.WriteLine($"Final value: ${wallet.Value:0.0000}");
             Console.WriteLine($"Investing result: {(wallet.Value / strategy.Invested - 1.0M) * 100.0M:0.00}%");
             Console.WriteLine($"Wallet:");
             foreach (var walletLine in wallet.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))

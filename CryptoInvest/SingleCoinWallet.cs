@@ -76,6 +76,6 @@ namespace CryptoInvest
         private bool IsToBeSoldApproximatellyAll(decimal units) =>
             Math.Abs(units - Units) * priceBoard.GetPrice(CoinId) < valueEps;
 
-        public override string ToString() => $"{CoinName}: {Units:0.000000000} {CoinId} ({Value:0.00} $)";
+        public override string ToString() => $"{CoinName}: {Units:0.000000000} {CoinId} (${Value:0.00})";
     }
 }

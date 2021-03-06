@@ -58,6 +58,6 @@ namespace CryptoInvest
             singleCoinWallets.Remove(coinId);
         }
 
-        public override string ToString() => $"Total value: {Value:0.0000}, {string.Join(", ", SingleCoinWallets.OrderByDescending(scw => scw.Value))}";
+        public override string ToString() => $"Total value: ${Value:0.0000}, {string.Join(", ", SingleCoinWallets.OrderByDescending(scw => scw.Value))}";
     }
 }

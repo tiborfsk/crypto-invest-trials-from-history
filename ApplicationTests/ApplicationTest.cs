@@ -112,17 +112,17 @@ namespace ApplicationTests
             Assert.Contains(lines, l => l.Contains("2021 01 17"));
             Assert.Contains(lines, l => l.Contains("2021 01 24"));
             Assert.Contains(lines, l => l.Contains("2021 01 31"));
-            Assert.Contains(lines, l => l.Contains("Initial market cap: 871400373306"));
-            Assert.Contains(lines, l => l.Contains("Final market cap: 984768537695"));
+            Assert.Contains(lines, l => l.Contains("Initial market cap: $871400373306"));
+            Assert.Contains(lines, l => l.Contains("Final market cap: $984768537695"));
             Assert.Contains(lines, l => l.Contains("Market cap change: 13.01"));
-            Assert.Contains(lines, l => l.Contains("Invested: 300"));
-            Assert.Contains(lines, l => l.Contains("Final value: 301.5716"));
+            Assert.Contains(lines, l => l.Contains("Invested: $300"));
+            Assert.Contains(lines, l => l.Contains("Final value: $301.5716"));
             Assert.Contains(lines, l => l.Contains("Investing result: 0.52"));
-            Assert.Contains(lines, l => l.Contains("Bitcoin: 0.007112207 BTC (235.52 $)"));
-            Assert.Contains(lines, l => l.Contains("Ethereum: 0.043738295 ETH (57.52 $)"));
-            Assert.Contains(lines, l => l.Contains("XRP: 17.347135998 XRP (8.54 $)"));
-            Assert.Contains(lines, l => l.Contains("Litecoin: 0.000000000 LTC (0.00 $)"));
-            Assert.Contains(lines, l => l.Contains("Polkadot: 0.000000000 DOT (0.00 $)"));
+            Assert.Contains(lines, l => l.Contains("Bitcoin: 0.007112207 BTC ($235.52)"));
+            Assert.Contains(lines, l => l.Contains("Ethereum: 0.043738295 ETH ($57.52)"));
+            Assert.Contains(lines, l => l.Contains("XRP: 17.347135998 XRP ($8.54)"));
+            Assert.Contains(lines, l => l.Contains("Litecoin: 0.000000000 LTC ($0.00)"));
+            Assert.Contains(lines, l => l.Contains("Polkadot: 0.000000000 DOT ($0.00)"));
         }
 
         //03.01. (BR)
