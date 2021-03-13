@@ -22,7 +22,7 @@ namespace CryptoInvest
             var strategy = input.EnableRebalancing
                 ? new Strategy(input.InvestAmount, strategyOperations, input.BuyingInterval.ToTimeSpan(), input.RebalancingInterval.ToTimeSpan())
                 : new Strategy(input.InvestAmount, strategyOperations, input.BuyingInterval.ToTimeSpan());
-            var simulation = new Simulation(priceBoard, strategy);
+            var simulation = new Simulation(priceBoard, strategy, new CoinUniqueIds());
 
             simulation.Run(coinStatesHistoryGenerator.GetCoinsStatesHistory(input.From, input.To));
 
