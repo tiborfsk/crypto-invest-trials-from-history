@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace CryptoInvest
@@ -20,9 +21,9 @@ namespace CryptoInvest
                     return new LinkToSnapshot
                     {
                         Time = new DateTime(
-                            int.Parse(hrefValue.Substring(12, 4)),
-                            int.Parse(hrefValue.Substring(16, 2)),
-                            int.Parse(hrefValue.Substring(18, 2))
+                            int.Parse(hrefValue.Substring(12, 4), CultureInfo.InvariantCulture),
+                            int.Parse(hrefValue.Substring(16, 2), CultureInfo.InvariantCulture),
+                            int.Parse(hrefValue.Substring(18, 2), CultureInfo.InvariantCulture)
                         ),
                         Link = $"https://coinmarketcap.com/{hrefValue.Trim('/')}"
                     };

@@ -6,7 +6,7 @@ namespace CryptoInvest
 {
     public class PriceBoard
     {
-        private SortedList<decimal, CoinStatus> sortedCoinsStates;
+        private List<CoinStatus> sortedCoinsStates;
         private Dictionary<string, CoinStatus> coinsStates;
         private readonly List<string> coinsToIgnore;
 
@@ -26,10 +26,7 @@ namespace CryptoInvest
         {
             TotalMarketCap = coinsStates.Sum(c => c.MarketCap);
             this.coinsStates = coinsStates.ToDictionary(c => c.CoinId, c => c);
-            sortedCoinsStates = new SortedList<decimal, CoinStatus>(
-                coinsStates.OrderByDescending(cs => cs.MarketCap).ToDictionary(cs => cs.MarketCap, cs => cs),
-                new DescendingComparer<decimal>()
-            );
+            sortedCoinsStates = new List<CoinStatus>(coinsStates.OrderByDescending(cs => cs.MarketCap));
         }
 
         public decimal GetPrice(string id)
@@ -52,7 +49,7 @@ namespace CryptoInvest
 
         public List<CoinStatus> GetTopCoins(int n)
         {
-            return sortedCoinsStates.Where(scs => !coinsToIgnore.Contains(scs.Value.CoinId)).Take(n).Select(cs => cs.Value).ToList();
+            return sortedCoinsStates.Where(scs => !coinsToIgnore.Contains(scs.CoinId)).Take(n).ToList();
         }
     }
 }
