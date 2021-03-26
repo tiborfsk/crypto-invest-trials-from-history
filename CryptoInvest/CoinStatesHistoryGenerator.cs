@@ -1,7 +1,7 @@
 ﻿using Polly;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace CryptoInvest
 {
@@ -10,12 +10,15 @@ namespace CryptoInvest
         private readonly HistoricalLinksParser historicalLinksParser;
         private readonly CoinsStatusParser coinsStatusParser;
         private readonly int sleep;
+        private readonly JsonFileCache<List<CoinStatus>> jsonFileCache;
 
-        public CoinStatesHistoryGenerator(HistoricalLinksParser historicalLinksParser, CoinsStatusParser coinsStatusParser, int sleep)
+        public CoinStatesHistoryGenerator(HistoricalLinksParser historicalLinksParser, CoinsStatusParser coinsStatusParser, 
+            int sleep, JsonFileCache<List<CoinStatus>> jsonFileCache)
         {
             this.historicalLinksParser = historicalLinksParser;
             this.coinsStatusParser = coinsStatusParser;
             this.sleep = sleep;
+            this.jsonFileCache = jsonFileCache;
         }
 
         public SortedList<DateTime, List<CoinStatus>> GetCoinsStatesHistory(DateTime from, DateTime to)
@@ -24,21 +27,32 @@ namespace CryptoInvest
             var cryptoStates = new Dictionary<DateTime, List<CoinStatus>>();
             historicalLinks.ForEach(hl =>
             {
-                Thread.Sleep(sleep * 1000);
-                Policy
-                    .Handle<Exception>()
-                    .WaitAndRetry(new[]
-                    {
-                        TimeSpan.FromSeconds(30),
-                        TimeSpan.FromSeconds(120),
-                        TimeSpan.FromSeconds(600),
-                        TimeSpan.FromSeconds(1800)
-                    })
-                    .Execute(() =>
-                    {
-                        Console.WriteLine($"{hl.Time:yyyy MM dd}...");
-                        cryptoStates.Add(hl.Time, coinsStatusParser.GetCryptoCoinsInTime(hl.Link));
-                    });
+                var cacheKey = hl.Time.ToString("yyyy-MM-dd");
+                var cachedCryptoStates = jsonFileCache.Get(cacheKey);
+                if (cachedCryptoStates != null)
+                {
+                    cryptoStates.Add(hl.Time, cachedCryptoStates);
+                }
+                else
+                {
+                    Task.Delay(TimeSpan.FromSeconds(sleep));
+                    Policy
+                        .Handle<Exception>()
+                        .WaitAndRetry(new[]
+                        {
+                            TimeSpan.FromSeconds(30),
+                            TimeSpan.FromSeconds(120),
+                            TimeSpan.FromSeconds(600),
+                            TimeSpan.FromSeconds(1800)
+                        })
+                        .Execute(() =>
+                        {
+                            Console.WriteLine($"{hl.Time:yyyy MM dd}...");
+                            var coinStates = coinsStatusParser.GetCryptoCoinsInTime(hl.Link);
+                            cryptoStates.Add(hl.Time, coinStates);
+                            jsonFileCache.Set(cacheKey, coinStates);
+                        });
+                }
             });
             return new SortedList<DateTime, List<CoinStatus>>(cryptoStates);
         }

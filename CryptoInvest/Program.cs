@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace CryptoInvest
 {
@@ -15,7 +18,12 @@ namespace CryptoInvest
                 Console.WriteLine($"{property.Name}: {(value is string[] arrayValue ? string.Join(", ", arrayValue) : value)}");
             }
 
-            var coinStatesHistoryGenerator = new CoinStatesHistoryGenerator(new HistoricalLinksParser(), new CoinsStatusParser(), input.SleepInSeconds);
+            var coinStatesHistoryGenerator = new CoinStatesHistoryGenerator(
+                new HistoricalLinksParser(), 
+                new CoinsStatusParser(), 
+                input.SleepInSeconds, 
+                new JsonFileCache<List<CoinStatus>>(new FileCache(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "cache")))
+            );
             var priceBoard = new PriceBoard(input.CoinsToIgnore.ToList());
             var wallet = new Wallet(priceBoard);
             var strategyOperations = new StrategyOperations(wallet, priceBoard, input.TopCoinsCount, input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap());

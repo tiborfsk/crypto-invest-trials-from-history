@@ -69,60 +69,66 @@ namespace ApplicationTests
 "
             );
 
-            // run app
-            var appProcess = new Process
+            new[] { 1, 2 }.ToList().ForEach(run =>
             {
-                StartInfo = new ProcessStartInfo
+                // run app
+                var appProcess = new Process
                 {
-                    FileName = Path.Combine(publishFolderName, "CryptoInvest"),
-                    Arguments = Path.Combine(publishFolderName, "input-test.json"),
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = Path.Combine(publishFolderName, "CryptoInvest"),
+                        Arguments = Path.Combine(publishFolderName, "input-test.json"),
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+
+                appProcess.Start();
+
+                var lines = new List<string>();
+                while (!appProcess.StandardOutput.EndOfStream)
+                {
+                    var outputLine = appProcess.StandardOutput.ReadLine();
+                    lines.Add(outputLine);
+                    output.WriteLine(outputLine);
                 }
-            };
 
-            appProcess.Start();
+                appProcess.WaitForExit();
 
-            var lines = new List<string>();
-            while (!appProcess.StandardOutput.EndOfStream)
-            {
-                var outputLine = appProcess.StandardOutput.ReadLine();
-                lines.Add(outputLine);
-                output.WriteLine(outputLine);
-            }
-
-            appProcess.WaitForExit();
-
-            // assert output
-            Assert.Equal(0, appProcess.ExitCode);
-            Assert.Equal(28, lines.Distinct().Count()); // distinct to address that dates in progress output part can repeat
-            Assert.Contains(lines, l => l.Contains("From") && l.Contains("2021") && l.Contains("1"));
-            Assert.Contains(lines, l => l.Contains("To") && l.Contains("2021") && l.Contains("31"));
-            Assert.Contains(lines, l => l.Contains("SleepInSeconds") && l.Contains("10"));
-            Assert.Contains(lines, l => l.Contains("BuyingInterval") && l.Contains("10"));
-            Assert.Contains(lines, l => l.Contains("EnableRebalancing") && l.Contains("rue"));
-            Assert.Contains(lines, l => l.Contains("RebalancingInterval") && l.Contains("14"));
-            Assert.Contains(lines, l => l.Contains("InvestAmount") && l.Contains("100"));
-            Assert.Contains(lines, l => l.Contains("TopCoinsCount") && l.Contains("3"));
-            Assert.Contains(lines, l => l.Contains("ReferenceTotalMarketCap") && l.Contains("TopCoins"));
-            Assert.Contains(lines, l => l.Contains("CoinsToIgnore") && l.Contains("USDT, TUSD, PAX, USDC, BUSD"));
-            Assert.Contains(lines, l => l.Contains("2021 01 03"));
-            Assert.Contains(lines, l => l.Contains("2021 01 10"));
-            Assert.Contains(lines, l => l.Contains("2021 01 17"));
-            Assert.Contains(lines, l => l.Contains("2021 01 24"));
-            Assert.Contains(lines, l => l.Contains("2021 01 31"));
-            Assert.Contains(lines, l => l.Contains("Initial market cap: $871400373306"));
-            Assert.Contains(lines, l => l.Contains("Final market cap: $984768537695"));
-            Assert.Contains(lines, l => l.Contains("Market cap change: 13.01"));
-            Assert.Contains(lines, l => l.Contains("Invested: $300"));
-            Assert.Contains(lines, l => l.Contains("Final value: $301.5716"));
-            Assert.Contains(lines, l => l.Contains("Investing result: 0.52"));
-            Assert.Contains(lines, l => l.Contains("Bitcoin: 0.007112207 BTC ($235.52)"));
-            Assert.Contains(lines, l => l.Contains("Ethereum: 0.043738295 ETH ($57.52)"));
-            Assert.Contains(lines, l => l.Contains("XRP: 17.347135998 XRP ($8.54)"));
-            Assert.Contains(lines, l => l.Contains("Litecoin: 0.000000000 LTC ($0.00)"));
-            Assert.Contains(lines, l => l.Contains("Polkadot: 0.000000000 DOT ($0.00)"));
+                // assert output
+                Assert.Equal(0, appProcess.ExitCode);
+                Assert.Equal(run == 1 ? 28 : 23, lines.Distinct().Count()); // distinct to address that dates in progress output part can repeat
+                Assert.Contains(lines, l => l.Contains("From") && l.Contains("2021") && l.Contains("1"));
+                Assert.Contains(lines, l => l.Contains("To") && l.Contains("2021") && l.Contains("31"));
+                Assert.Contains(lines, l => l.Contains("SleepInSeconds") && l.Contains("10"));
+                Assert.Contains(lines, l => l.Contains("BuyingInterval") && l.Contains("10"));
+                Assert.Contains(lines, l => l.Contains("EnableRebalancing") && l.Contains("rue"));
+                Assert.Contains(lines, l => l.Contains("RebalancingInterval") && l.Contains("14"));
+                Assert.Contains(lines, l => l.Contains("InvestAmount") && l.Contains("100"));
+                Assert.Contains(lines, l => l.Contains("TopCoinsCount") && l.Contains("3"));
+                Assert.Contains(lines, l => l.Contains("ReferenceTotalMarketCap") && l.Contains("TopCoins"));
+                Assert.Contains(lines, l => l.Contains("CoinsToIgnore") && l.Contains("USDT, TUSD, PAX, USDC, BUSD"));
+                if (run == 1)
+                {
+                    Assert.Contains(lines, l => l.Contains("2021 01 03"));
+                    Assert.Contains(lines, l => l.Contains("2021 01 10"));
+                    Assert.Contains(lines, l => l.Contains("2021 01 17"));
+                    Assert.Contains(lines, l => l.Contains("2021 01 24"));
+                    Assert.Contains(lines, l => l.Contains("2021 01 31"));
+                }
+                Assert.Contains(lines, l => l.Contains("Initial market cap: $871400373306"));
+                Assert.Contains(lines, l => l.Contains("Final market cap: $984768537695"));
+                Assert.Contains(lines, l => l.Contains("Market cap change: 13.01"));
+                Assert.Contains(lines, l => l.Contains("Invested: $300"));
+                Assert.Contains(lines, l => l.Contains("Final value: $301.5716"));
+                Assert.Contains(lines, l => l.Contains("Investing result: 0.52"));
+                Assert.Contains(lines, l => l.Contains("Bitcoin: 0.007112207 BTC ($235.52)"));
+                Assert.Contains(lines, l => l.Contains("Ethereum: 0.043738295 ETH ($57.52)"));
+                Assert.Contains(lines, l => l.Contains("XRP: 17.347135998 XRP ($8.54)"));
+                Assert.Contains(lines, l => l.Contains("Litecoin: 0.000000000 LTC ($0.00)"));
+                Assert.Contains(lines, l => l.Contains("Polkadot: 0.000000000 DOT ($0.00)"));
+            });
         }
 
         //03.01. (BR)
