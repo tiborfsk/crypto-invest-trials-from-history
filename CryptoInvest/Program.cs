@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace CryptoInvest
 {
@@ -22,7 +21,7 @@ namespace CryptoInvest
                 new HistoricalLinksParser(), 
                 new CoinsStatusParser(), 
                 input.SleepInSeconds, 
-                new JsonFileCache<List<CoinStatus>>(new FileCache(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "cache")))
+                new JsonFileCache<List<CoinStatus>>(new FileCache(Path.Combine(AppContext.BaseDirectory, "cache")))
             );
             var priceBoard = new PriceBoard(input.CoinsToIgnore.ToList());
             var wallet = new Wallet(priceBoard);
