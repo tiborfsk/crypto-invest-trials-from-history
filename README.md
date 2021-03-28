@@ -1,6 +1,6 @@
 # crypto-invest-trials-from-history
 
-Simulates naive periodic investing in cryptos and displays results in comparison to total market cap change. The investment ratio to certain cryptocurrency depends simply on its market cap.  
+Simulates passive periodic investing in cryptos and displays results in comparison to total market cap change. The investment ratio to certain cryptocurrency depends simply on its market cap.  
 
 ## Run
 
@@ -18,6 +18,7 @@ enableRebalancing | true | Flag indicating whether rebalancing should perform
 rebalancingInterval | 14.00:00:00 | Interval of rebalancing
 investAmount | 100 | Amount of money in USD to apply in single investment
 topCoinsCount | 10 | Number of top coins (with highest market cap) to invest
+notTopCoinsDistribution | AmongNewTopCoins | How to distribute investments from coins which are not already top coins. Two options are available: AmongNewTopCoins (investments will be distributed among new top coins), AmongAllTopCoins (investments will be distributed among all current top coins)
 referenceTotalMarketCap | TopCoins | How to compute reference total market cap. Two options are available: TopCoins (market caps sum of top coins), AllCoins (total market cap of all cryptos)
 coinsToIgnore | ["USDT", "TUSD", "PAX", "USDC", "BUSD"] | Array of coin IDs to ignore
 
