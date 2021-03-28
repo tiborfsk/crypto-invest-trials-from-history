@@ -47,7 +47,7 @@ namespace ApplicationTests
                 "CryptoInvest.csproj"
             );
             Console.WriteLine(pathToCsproj);
-            var publishProcess = Process.Start("dotnet", @$"publish {pathToCsproj} -o publish");
+            var publishProcess = Process.Start("dotnet", $"publish {pathToCsproj} -o publish");
             publishProcess.WaitForExit();
             Assert.Equal(0, publishProcess.ExitCode);
 
@@ -63,6 +63,7 @@ namespace ApplicationTests
     ""rebalancingInterval"":""14.00:00:00"",
     ""investAmount"":100,
     ""topCoinsCount"":3,
+    ""notTopCoinsDistribution"": ""AmongNewTopCoins"",
     ""referenceTotalMarketCap"":""TopCoins"",
     ""coinsToIgnore"":[""USDT"", ""TUSD"", ""PAX"", ""USDC"", ""BUSD""]
 }
@@ -98,7 +99,7 @@ namespace ApplicationTests
 
                 // assert output
                 Assert.Equal(0, appProcess.ExitCode);
-                Assert.Equal(run == 1 ? 28 : 23, lines.Distinct().Count()); // distinct to address that dates in progress output part can repeat
+                Assert.Equal(run == 1 ? 29 : 24, lines.Distinct().Count()); // distinct to address that dates in progress output part can repeat
                 Assert.Contains(lines, l => l.Contains("From") && l.Contains("2021") && l.Contains("1"));
                 Assert.Contains(lines, l => l.Contains("To") && l.Contains("2021") && l.Contains("31"));
                 Assert.Contains(lines, l => l.Contains("SleepInSeconds") && l.Contains("10"));
@@ -107,6 +108,7 @@ namespace ApplicationTests
                 Assert.Contains(lines, l => l.Contains("RebalancingInterval") && l.Contains("14"));
                 Assert.Contains(lines, l => l.Contains("InvestAmount") && l.Contains("100"));
                 Assert.Contains(lines, l => l.Contains("TopCoinsCount") && l.Contains("3"));
+                Assert.Contains(lines, l => l.Contains("NotTopCoinsDistribution") && l.Contains("AmongNewTopCoins"));
                 Assert.Contains(lines, l => l.Contains("ReferenceTotalMarketCap") && l.Contains("TopCoins"));
                 Assert.Contains(lines, l => l.Contains("CoinsToIgnore") && l.Contains("USDT, TUSD, PAX, USDC, BUSD"));
                 if (run == 1)

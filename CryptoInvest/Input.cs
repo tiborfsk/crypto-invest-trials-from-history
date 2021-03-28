@@ -12,6 +12,7 @@ namespace CryptoInvest
         public string RebalancingInterval { get; init; }
         public decimal InvestAmount { get; init; }
         public int TopCoinsCount { get; init; }
+        public string NotTopCoinsDistribution { get; init; }
         public string ReferenceTotalMarketCap { get; init; }
         public string[] CoinsToIgnore { get; init; }
     }

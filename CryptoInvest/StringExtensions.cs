@@ -7,7 +7,8 @@ namespace CryptoInvest
     {
         public static TimeSpan ToTimeSpan(this string @string) => TimeSpan.Parse(@string, CultureInfo.InvariantCulture);
 
-        public static ReferenceTotalMarketCap ToReferenceTotalMarketCap(this string @string) => 
-            (ReferenceTotalMarketCap)Enum.Parse(typeof(ReferenceTotalMarketCap), @string);
+        public static NotTopCoinsDistribution ToNotTopCoinsDistribution(this string @string) => Enum.Parse<NotTopCoinsDistribution>(@string);
+
+        public static ReferenceTotalMarketCap ToReferenceTotalMarketCap(this string @string) => Enum.Parse<ReferenceTotalMarketCap>(@string);
     }
 }

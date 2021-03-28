@@ -5,7 +5,8 @@ namespace CryptoInvest
     public class Strategy
     {
         private readonly decimal investAmount;
-        private readonly StrategyOperations strategyOperations;
+        private readonly StrategyBuyOperations strategyBuyOperations;
+        private readonly StrategyRebalanceOperations strategyRebalanceOperations;
         private readonly TimeSpan buyingInterval;
         private readonly bool performRebalancing;
         private readonly TimeSpan rebalancingInterval;
@@ -14,16 +15,18 @@ namespace CryptoInvest
 
         public decimal Invested { get; private set; } = 0;
 
-        public Strategy(decimal investAmount, StrategyOperations strategyOperations, TimeSpan buyingInterval)
+        public Strategy(decimal investAmount, StrategyBuyOperations strategyBuyOperations, TimeSpan buyingInterval)
         {
             this.investAmount = investAmount;
-            this.strategyOperations = strategyOperations;
+            this.strategyBuyOperations = strategyBuyOperations;
             this.buyingInterval = buyingInterval;
         }
 
-        public Strategy(decimal investAmount, StrategyOperations strategyOperations, TimeSpan buyingInterval, TimeSpan rebalancingInterval)
-            : this(investAmount, strategyOperations, buyingInterval)
+        public Strategy(decimal investAmount, StrategyBuyOperations strategyBuyOperations, TimeSpan buyingInterval, 
+            StrategyRebalanceOperations strategyRebalanceOperations, TimeSpan rebalancingInterval)
+            : this(investAmount, strategyBuyOperations, buyingInterval)
         {
+            this.strategyRebalanceOperations = strategyRebalanceOperations;
             this.rebalancingInterval = rebalancingInterval;
             performRebalancing = true;
         }
@@ -49,17 +52,17 @@ namespace CryptoInvest
 
             if (buys > 0 && rebalance)
             {
-                strategyOperations.PerformBuyAndRebalancing(investAmount * buys);
+                strategyRebalanceOperations.PerformBuyAndRebalancing(investAmount * buys);
                 Invested += investAmount * buys;
             }
             else if (buys > 0)
             {
-                strategyOperations.PerformOnlyBuy(investAmount * buys);
+                strategyBuyOperations.PerformBuy(investAmount * buys);
                 Invested += investAmount * buys;
             }
             else if (rebalance)
             {
-                strategyOperations.PerformOnlyRebalancing();
+                strategyRebalanceOperations.PerformOnlyRebalancing();
             }
         }
     }

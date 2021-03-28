@@ -4,32 +4,20 @@ using System.Linq;
 
 namespace CryptoInvest
 {
-    public class StrategyOperations
+    public class StrategyRebalanceOperations
     {
         private readonly Wallet wallet;
         private readonly PriceBoard priceBoard;
         private readonly int topCoinsToBuyCount;
         private readonly ReferenceTotalMarketCap referenceTotalMarketCap;
 
-        public StrategyOperations(Wallet wallet, PriceBoard priceBoard, int topCoinsToBuyCount, ReferenceTotalMarketCap referenceTotalMarketCap)
+        public StrategyRebalanceOperations(Wallet wallet, PriceBoard priceBoard, int topCoinsToBuyCount,
+            NotTopCoinsDistribution notTopCoinsDistribution, ReferenceTotalMarketCap referenceTotalMarketCap)
         {
             this.wallet = wallet;
             this.priceBoard = priceBoard;
             this.topCoinsToBuyCount = topCoinsToBuyCount;
             this.referenceTotalMarketCap = referenceTotalMarketCap;
-        }
-
-        public virtual void PerformOnlyBuy(decimal investAmount)
-        {
-            var totalCashToInvest = investAmount + SellCoinsNotAlreadyInTop();
-            var topCoins = priceBoard.GetTopCoins(topCoinsToBuyCount);
-
-            foreach (var coin in topCoins)
-            {
-                var singleCoinWallet = wallet.GetOrAddSingleCoinWallet(coin.CoinId, coin.Name);
-
-                singleCoinWallet.BuyByCash(ComputeCashToInvestToCoin(coin.CoinId, totalCashToInvest));
-            }
         }
 
         public virtual void PerformOnlyRebalancing()
@@ -78,12 +66,6 @@ namespace CryptoInvest
             }
         }
 
-        private decimal SellCoinsNotAlreadyInTop()
-        {
-            var topCoins = priceBoard.GetTopCoins(topCoinsToBuyCount).Select(tc => tc.CoinId);
-            return wallet.SingleCoinWallets.Where(scw => !topCoins.Contains(scw.CoinId)).Sum(scw => scw.SellAll());
-        }
-
         private decimal ComputeBalanceToInvestToCoin(string coinId)
         {
             var marketCapOfTopCoins = priceBoard.GetTopCoins(topCoinsToBuyCount).Sum(c => c.MarketCap);
@@ -98,7 +80,5 @@ namespace CryptoInvest
                 _ => throw new NotImplementedException(),
             };
         }
-
-        private decimal ComputeCashToInvestToCoin(string coinId, decimal totalCashToInvest) => ComputeBalanceToInvestToCoin(coinId) * totalCashToInvest;
     }
 }

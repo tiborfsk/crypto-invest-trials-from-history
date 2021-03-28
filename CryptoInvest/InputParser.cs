@@ -36,6 +36,13 @@ namespace CryptoInvest
                 throw new InputParserException($"{nameof(input.RebalancingInterval)} is not parsable as time.");
             }
 
+            if (!Enum.TryParse(typeof(NotTopCoinsDistribution), input.NotTopCoinsDistribution, out _))
+            {
+                throw new InputParserException(
+                    $"{nameof(input.NotTopCoinsDistribution)} is not parsable. Allowed values are {string.Join(", ", Enum.GetNames(typeof(NotTopCoinsDistribution)))}."
+                );
+            }
+
             if (!Enum.TryParse(typeof(ReferenceTotalMarketCap), input.ReferenceTotalMarketCap, out _))
             {
                 throw new InputParserException(

@@ -12,8 +12,8 @@ namespace UnitTests
         {
             var priceBoard = new PriceBoard();
             var wallet = new Wallet(priceBoard);
-            var strategyOperations = new StrategyOperations(wallet, priceBoard, 3, ReferenceTotalMarketCap.TopCoins);
-            var strategy = new Strategy(10, strategyOperations, TimeSpan.FromDays(1));
+            var strategyBuyOperations = new StrategyBuyOperations(wallet, priceBoard, 3, NotTopCoinsDistribution.AmongAllTopCoins, ReferenceTotalMarketCap.TopCoins);
+            var strategy = new Strategy(10, strategyBuyOperations, TimeSpan.FromDays(1));
             var simulation = new Simulation(priceBoard, strategy, new CoinUniqueIds());
             simulation.Run(new SortedList<DateTime, List<CoinStatus>>(new Dictionary<DateTime, List<CoinStatus>>
             {

@@ -1,12 +1,13 @@
 {
-	"from":"2021-01-01",
-	"to":"2021-01-31",
-	"sleepInSeconds":10,
-	"buyingInterval":"7.00:00:00",
-	"enableRebalancing":true,
-	"rebalancingInterval":"14.00:00:00",
-	"investAmount":100,
-	"topCoinsCount":10,
-	"referenceTotalMarketCap":"TopCoins",
-	"coinsToIgnore":["USDT", "TUSD", "PAX", "USDC", "BUSD"]
+	"from": "2021-01-01",
+	"to": "2021-01-31",
+	"sleepInSeconds": 10,
+	"buyingInterval": "7.00:00:00",
+	"enableRebalancing": true,
+	"rebalancingInterval": "14.00:00:00",
+	"investAmount": 100,
+	"topCoinsCount": 10,
+	"notTopCoinsDistribution": "AmongNewTopCoins",
+	"referenceTotalMarketCap": "TopCoins",
+	"coinsToIgnore": [ "USDT", "TUSD", "PAX", "USDC", "BUSD" ]
 }
