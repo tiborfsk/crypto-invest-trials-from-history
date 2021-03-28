@@ -104,7 +104,7 @@ namespace UnitTests
         public void PerformBuysAndRebalancingInSameTime()
         {
             var strategyBuyOperations = Substitute.For<StrategyBuyOperations>(default, default, default, default, default);
-            var strategyRebalanceOperations = Substitute.For<StrategyRebalanceOperations>(default, default, default, default, default);
+            var strategyRebalanceOperations = Substitute.For<StrategyRebalanceOperations>(default, default, default, default);
             var strategy = new Strategy(1.0M, strategyBuyOperations, buyingInterval: TimeSpan.FromDays(2),
                 strategyRebalanceOperations, rebalancingInterval: TimeSpan.FromDays(2)
             );
@@ -222,7 +222,7 @@ namespace UnitTests
         public void PerformBuysAndRebalancingInVariousTimes()
         {
             var strategyBuyOperations = Substitute.For<StrategyBuyOperations>(default, default, default, default, default);
-            var strategyRebalanceOperations = Substitute.For<StrategyRebalanceOperations>(default, default, default, default, default);
+            var strategyRebalanceOperations = Substitute.For<StrategyRebalanceOperations>(default, default, default, default);
             var strategy = new Strategy(investAmount, strategyBuyOperations, buyingInterval: TimeSpan.FromDays(3), 
                 strategyRebalanceOperations, rebalancingInterval: TimeSpan.FromDays(4));
 

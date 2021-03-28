@@ -8,18 +8,18 @@ namespace CryptoInvest
     {
         private readonly Wallet wallet;
         private readonly PriceBoard priceBoard;
+        private readonly InvestBalanceComputation investBalanceComputation;
         private readonly int topCoinsToBuyCount;
         private readonly NotTopCoinsDistribution notTopCoinsDistribution;
-        private readonly ReferenceTotalMarketCap referenceTotalMarketCap;
 
-        public StrategyBuyOperations(Wallet wallet, PriceBoard priceBoard, int topCoinsToBuyCount,
-            NotTopCoinsDistribution notTopCoinsDistribution, ReferenceTotalMarketCap referenceTotalMarketCap)
+        public StrategyBuyOperations(Wallet wallet, PriceBoard priceBoard, InvestBalanceComputation investBalanceComputation, int topCoinsToBuyCount,
+            NotTopCoinsDistribution notTopCoinsDistribution)
         {
             this.wallet = wallet;
             this.priceBoard = priceBoard;
+            this.investBalanceComputation = investBalanceComputation;
             this.topCoinsToBuyCount = topCoinsToBuyCount;
             this.notTopCoinsDistribution = notTopCoinsDistribution;
-            this.referenceTotalMarketCap = referenceTotalMarketCap;
         }
 
         public virtual void PerformBuy(decimal investAmount)
@@ -67,21 +67,7 @@ namespace CryptoInvest
             return wallet.SingleCoinWallets.Where(scw => !topCoins.Contains(scw.CoinId)).Sum(scw => scw.SellAll());
         }
 
-        private decimal ComputeBalanceToInvestToCoin(string coinId)
-        {
-            var marketCapOfTopCoins = priceBoard.GetTopCoins(topCoinsToBuyCount).Sum(c => c.MarketCap);
-
-            return referenceTotalMarketCap switch
-            {
-                ReferenceTotalMarketCap.TopCoins => priceBoard.GetMarketCap(coinId) / marketCapOfTopCoins,
-                ReferenceTotalMarketCap.AllCoins => (
-                    priceBoard.GetMarketCap(coinId) / priceBoard.TotalMarketCap +
-                    (1 - marketCapOfTopCoins / priceBoard.TotalMarketCap) / topCoinsToBuyCount
-                ),
-                _ => throw new NotImplementedException(),
-            };
-        }
-
-        private decimal ComputeCashToInvestToCoin(string coinId, decimal totalCashToInvest) => ComputeBalanceToInvestToCoin(coinId) * totalCashToInvest;
+        private decimal ComputeCashToInvestToCoin(string coinId, decimal totalCashToInvest) => 
+            investBalanceComputation.ComputeBalanceToInvestToCoin(coinId) * totalCashToInvest;
     }
 }

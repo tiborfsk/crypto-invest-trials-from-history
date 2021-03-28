@@ -36,9 +36,10 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-
+            const int topCoins = 2;
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
             var strategyBuyOperations = new StrategyBuyOperations(
-                wallet, priceBoard, topCoinsToBuyCount: 2, NotTopCoinsDistribution.AmongAllTopCoins, ReferenceTotalMarketCap.TopCoins
+                wallet, priceBoard, investBalanceComputation, topCoins, NotTopCoinsDistribution.AmongAllTopCoins
             );
 
             // test
@@ -88,9 +89,10 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-
+            const int topCoins = 2;
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.AllCoins);
             var strategyBuyOperations = new StrategyBuyOperations(
-                wallet, priceBoard, topCoinsToBuyCount: 2, NotTopCoinsDistribution.AmongAllTopCoins, ReferenceTotalMarketCap.AllCoins
+                wallet, priceBoard, investBalanceComputation, topCoins, NotTopCoinsDistribution.AmongAllTopCoins
             );
 
             // test
@@ -132,9 +134,10 @@ namespace UnitTests
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
             wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
-
+            const int topCoins = 2;
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
             var strategyBuyOperations = new StrategyBuyOperations(
-                wallet, priceBoard, topCoinsToBuyCount: 2, NotTopCoinsDistribution.AmongAllTopCoins, ReferenceTotalMarketCap.TopCoins
+                wallet, priceBoard, investBalanceComputation, topCoins, NotTopCoinsDistribution.AmongAllTopCoins
             );
 
             // test
@@ -188,9 +191,10 @@ namespace UnitTests
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
             wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
-
+            const int topCoins = 2;
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.AllCoins);
             var strategyOperations = new StrategyBuyOperations(
-                wallet, priceBoard, topCoinsToBuyCount: 2, NotTopCoinsDistribution.AmongAllTopCoins, ReferenceTotalMarketCap.AllCoins
+                wallet, priceBoard, investBalanceComputation, topCoins, NotTopCoinsDistribution.AmongAllTopCoins
             );
 
             // test
@@ -238,9 +242,10 @@ namespace UnitTests
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
             wallet.AddSingleCoinWallet("CCC", "ccc");
             wallet.GetSingleCoinWallet("CCC").BuyUnits(6);
-
+            var topCoins = 2;
+            var investAmountComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
             var strategyOperations = new StrategyBuyOperations(
-                wallet, priceBoard, topCoinsToBuyCount: 2, NotTopCoinsDistribution.AmongAllTopCoins, ReferenceTotalMarketCap.TopCoins
+                wallet, priceBoard, investAmountComputation, topCoins, NotTopCoinsDistribution.AmongAllTopCoins
             );
 
             // test

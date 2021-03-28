@@ -25,15 +25,21 @@ namespace CryptoInvest
             );
             var priceBoard = new PriceBoard(input.CoinsToIgnore.ToList());
             var wallet = new Wallet(priceBoard);
-            var strategyOperations = new StrategyOperationsFactory(
-                wallet, priceBoard, input.TopCoinsCount,
-                input.NotTopCoinsDistribution.ToNotTopCoinsDistribution(), input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap()
+            var investBalanceComputation = new InvestBalanceComputation(
+                priceBoard, input.TopCoinsCount, input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap()
+            );
+            var strategyBuyOperations = new StrategyBuyOperations(
+                wallet, priceBoard, investBalanceComputation,
+                input.TopCoinsCount, input.NotTopCoinsDistribution.ToNotTopCoinsDistribution()
+            );
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(
+                wallet, priceBoard, investBalanceComputation, input.TopCoinsCount
             );
             var strategy = input.EnableRebalancing
                 ? new Strategy(
-                    input.InvestAmount, strategyOperations.CreateStrategyBuyOperations(), input.BuyingInterval.ToTimeSpan(), 
-                    strategyOperations.CreateStrategyRebalanceOperations(), input.RebalancingInterval.ToTimeSpan()
-                ) : new Strategy(input.InvestAmount, strategyOperations.CreateStrategyBuyOperations(), input.BuyingInterval.ToTimeSpan());
+                    input.InvestAmount, strategyBuyOperations, input.BuyingInterval.ToTimeSpan(),
+                    strategyRebalanceOperations, input.RebalancingInterval.ToTimeSpan()
+                ) : new Strategy(input.InvestAmount, strategyBuyOperations, input.BuyingInterval.ToTimeSpan());
             var simulation = new Simulation(priceBoard, strategy, new CoinUniqueIds());
 
             simulation.Run(coinStatesHistoryGenerator.GetCoinsStatesHistory(input.From, input.To));

@@ -1,7 +1,7 @@
 ﻿using Polly;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace CryptoInvest
 {
@@ -35,7 +35,7 @@ namespace CryptoInvest
                 }
                 else
                 {
-                    Task.Delay(TimeSpan.FromSeconds(sleep));
+                    Thread.Sleep(sleep * 1000);
                     Policy
                         .Handle<Exception>()
                         .WaitAndRetry(new[]
