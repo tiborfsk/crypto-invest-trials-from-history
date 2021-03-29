@@ -4,7 +4,7 @@ Simulates passive periodic investing in cryptos and displays results in comparis
 
 ## Run
 
-Simply run `CryptoInvest` binary. By default this takes `input.json` (bundled within release package) with input parameters. For using another file use additional argument: `CryptoInvest my-input.json`.
+Simply run `CryptoInvest` binary. By default this takes `input.json` (bundled within release package) containing input parameters. For using another file use additional argument: `CryptoInvest my-input.json`.
 
 ## Input parameters
 

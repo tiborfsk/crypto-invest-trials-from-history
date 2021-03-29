@@ -34,10 +34,11 @@ namespace CryptoInvest
             var idealBalances = new Dictionary<string, decimal>();
             var currentBalances = new Dictionary<string, decimal>();
             var targetWalletValue = wallet.Value + newCashToInvest;
+            var topCoins = priceBoard.GetTopCoins(topCoinsToBuyCount);
 
-            foreach (var topCoin in priceBoard.GetTopCoins(topCoinsToBuyCount))
+            foreach (var topCoin in topCoins)
             {
-                idealBalances.Add(topCoin.CoinId, investBalanceComputation.ComputeBalanceToInvestToCoin(topCoin.CoinId));
+                idealBalances.Add(topCoin.CoinId, investBalanceComputation.ComputeBalanceToInvestToCoin(topCoin.CoinId, topCoins));
             }
 
             foreach (var coin in wallet.SingleCoinWallets)

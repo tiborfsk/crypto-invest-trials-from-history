@@ -26,7 +26,7 @@ namespace CryptoInvest
             var priceBoard = new PriceBoard(input.CoinsToIgnore.ToList());
             var wallet = new Wallet(priceBoard);
             var investBalanceComputation = new InvestBalanceComputation(
-                priceBoard, input.TopCoinsCount, input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap()
+                priceBoard, input.ReferenceTotalMarketCap.ToReferenceTotalMarketCap()
             );
             var strategyBuyOperations = new StrategyBuyOperations(
                 wallet, priceBoard, investBalanceComputation,

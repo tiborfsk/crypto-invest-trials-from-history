@@ -58,7 +58,7 @@ namespace CryptoInvest
             {
                 var singleCoinWallet = wallet.GetOrAddSingleCoinWallet(coin.CoinId, coin.Name);
 
-                singleCoinWallet.BuyByCash(ComputeCashToInvestToCoin(coin.CoinId, cashToDistribute));
+                singleCoinWallet.BuyByCash(ComputeCashToInvestToCoin(coin.CoinId, coins, cashToDistribute));
             }
         }
         private decimal SellCoinsNotAlreadyInTop()
@@ -67,7 +67,7 @@ namespace CryptoInvest
             return wallet.SingleCoinWallets.Where(scw => !topCoins.Contains(scw.CoinId)).Sum(scw => scw.SellAll());
         }
 
-        private decimal ComputeCashToInvestToCoin(string coinId, decimal totalCashToInvest) => 
-            investBalanceComputation.ComputeBalanceToInvestToCoin(coinId) * totalCashToInvest;
+        private decimal ComputeCashToInvestToCoin(string coinId, List<CoinStatus> coinsGroup, decimal totalCashToInvest) => 
+            investBalanceComputation.ComputeBalanceToInvestToCoin(coinId, coinsGroup) * totalCashToInvest;
     }
 }

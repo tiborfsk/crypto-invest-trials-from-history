@@ -36,9 +36,8 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.TopCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformBuyAndRebalancing(investAmount);
@@ -87,9 +86,8 @@ namespace UnitTests
                 }
             });
             var wallet = new Wallet(priceBoard);
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.AllCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.AllCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformBuyAndRebalancing(investAmount);
@@ -137,9 +135,8 @@ namespace UnitTests
             wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.TopCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformOnlyRebalancing();
@@ -193,9 +190,8 @@ namespace UnitTests
             wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.AllCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.AllCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformOnlyRebalancing();
@@ -243,9 +239,8 @@ namespace UnitTests
             wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.TopCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformBuyAndRebalancing(investAmount);
@@ -299,9 +294,8 @@ namespace UnitTests
             wallet.AddSingleCoinWallet("BBB", "bbb");
             wallet.GetSingleCoinWallet("BBB").BuyUnits(6);
 
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.AllCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.AllCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformBuyAndRebalancing(investAmount);
@@ -322,7 +316,7 @@ namespace UnitTests
         {
             // prepare
             var priceBoard = new PriceBoard();
-            priceBoard.PutData(new List<CoinStatus>
+            var coinStates = new List<CoinStatus>
             {
                 new CoinStatus
                 {
@@ -341,24 +335,33 @@ namespace UnitTests
                     CoinId = "CCC",
                     MarketCap = 20,
                     Price = 3
+                },
+                new CoinStatus
+                {
+                    CoinId = "DDD",
+                    MarketCap = 25,
+                    Price = 4
                 }
-            });
+            };
+            priceBoard.PutData(coinStates);
             var wallet = new Wallet(priceBoard);
             wallet.AddSingleCoinWallet("AAA", "aaa");
             wallet.GetSingleCoinWallet("AAA").BuyUnits(5);
             wallet.AddSingleCoinWallet("CCC", "ccc");
             wallet.GetSingleCoinWallet("CCC").BuyUnits(6);
+            wallet.AddSingleCoinWallet("DDD", "ddd");
+            wallet.GetSingleCoinWallet("DDD").BuyUnits(7);
+            priceBoard.PutData(coinStates.SkipLast(1).ToList());
 
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.TopCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformOnlyRebalancing();
 
             // assert
             Assert.Equal(28M, wallet.Value, precision: 10);
-            Assert.Equal(3, wallet.SingleCoinWallets.Count);
+            Assert.Equal(4, wallet.SingleCoinWallets.Count);
             Assert.Contains(wallet.SingleCoinWallets, scw => scw.CoinId == "AAA");
             Assert.Contains(wallet.SingleCoinWallets, scw => scw.CoinId == "BBB");
             Assert.Equal(9.333333333333333M, wallet.SingleCoinWallets.Single(scw => scw.CoinId == "AAA").Units, precision: 10);
@@ -367,6 +370,8 @@ namespace UnitTests
             Assert.Equal(9.333333333333333M, wallet.SingleCoinWallets.Single(scw => scw.CoinId == "BBB").Value, precision: 10);
             Assert.Equal(0, wallet.SingleCoinWallets.Single(scw => scw.CoinId == "CCC").Units);
             Assert.Equal(0, wallet.SingleCoinWallets.Single(scw => scw.CoinId == "CCC").Value);
+            Assert.Equal(0, wallet.SingleCoinWallets.Single(scw => scw.CoinId == "DDD").Units);
+            Assert.Equal(0, wallet.SingleCoinWallets.Single(scw => scw.CoinId == "DDD").Value);
         }
 
         [Fact]
@@ -401,9 +406,8 @@ namespace UnitTests
             wallet.AddSingleCoinWallet("CCC", "ccc");
             wallet.GetSingleCoinWallet("CCC").BuyUnits(6);
 
-            const int topCoins = 2;
-            var investBalanceComputation = new InvestBalanceComputation(priceBoard, topCoins, ReferenceTotalMarketCap.TopCoins);
-            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoins);
+            var investBalanceComputation = new InvestBalanceComputation(priceBoard, ReferenceTotalMarketCap.TopCoins);
+            var strategyRebalanceOperations = new StrategyRebalanceOperations(wallet, priceBoard, investBalanceComputation, topCoinsToBuyCount: 2);
 
             // test
             strategyRebalanceOperations.PerformBuyAndRebalancing(investAmount);

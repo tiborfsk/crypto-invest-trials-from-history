@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CryptoInvest
@@ -6,26 +7,24 @@ namespace CryptoInvest
     public class InvestBalanceComputation
     {
         private readonly PriceBoard priceBoard;
-        private readonly int topCoinsToBuyCount;
         private readonly ReferenceTotalMarketCap referenceTotalMarketCap;
 
-        public InvestBalanceComputation(PriceBoard priceBoard, int topCoinsToBuyCount, ReferenceTotalMarketCap referenceTotalMarketCap)
+        public InvestBalanceComputation(PriceBoard priceBoard, ReferenceTotalMarketCap referenceTotalMarketCap)
         {
             this.priceBoard = priceBoard;
-            this.topCoinsToBuyCount = topCoinsToBuyCount;
             this.referenceTotalMarketCap = referenceTotalMarketCap;
         }
 
-        public decimal ComputeBalanceToInvestToCoin(string coinId)
+        public decimal ComputeBalanceToInvestToCoin(string coinId, List<CoinStatus> coinsGroup)
         {
-            var marketCapOfTopCoins = priceBoard.GetTopCoins(topCoinsToBuyCount).Sum(c => c.MarketCap);
+            var marketCapOfCoinsGroup = coinsGroup.Sum(c => c.MarketCap);
 
             return referenceTotalMarketCap switch
             {
-                ReferenceTotalMarketCap.TopCoins => priceBoard.GetMarketCap(coinId) / marketCapOfTopCoins,
+                ReferenceTotalMarketCap.TopCoins => priceBoard.GetMarketCap(coinId) / marketCapOfCoinsGroup,
                 ReferenceTotalMarketCap.AllCoins => (
                     priceBoard.GetMarketCap(coinId) / priceBoard.TotalMarketCap +
-                    (1 - marketCapOfTopCoins / priceBoard.TotalMarketCap) / topCoinsToBuyCount
+                    (1 - marketCapOfCoinsGroup / priceBoard.TotalMarketCap) / coinsGroup.Count
                 ),
                 _ => throw new NotImplementedException(),
             };
